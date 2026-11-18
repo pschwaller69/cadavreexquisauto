@@ -13,7 +13,7 @@ function schema_sql(string $driver): array
         "CREATE TABLE IF NOT EXISTS participants (
             id $pk, nom VARCHAR(120) NOT NULL, prenom VARCHAR(120) NOT NULL, mail VARCHAR(190) NOT NULL UNIQUE,
             club VARCHAR(190), token VARCHAR(64) NOT NULL UNIQUE, notif INT NOT NULL DEFAULT 1,
-            date_inscription DATETIME, en_attente_depuis DATETIME NULL, remarque VARCHAR(255))$eng",
+            date_inscription DATETIME, en_attente_depuis DATETIME NULL, rappel_le DATETIME NULL, remarque VARCHAR(255))$eng",
         // Cadavre : statut 'active' (un participant joue) | 'attente' (attend un participant) | 'terminee'
         "CREATE TABLE IF NOT EXISTS chaines (
             id $pk, numero INT NOT NULL, statut VARCHAR(20) NOT NULL DEFAULT 'attente',
@@ -73,7 +73,7 @@ Découvre la photo qui te précède et dépose la tienne ici :
 Tu as jusqu'au {date_limite} pour déposer ta photo (JPEG, la plus grande résolution possible).
 Le même lien te permet de revoir la photo à tout moment.
 
-Si tu ne peux finalement pas participer, clique sur « Je ne peux pas participer » en bas de la page : le cadavre continuera sans attendre.
+Pas le temps en ce moment ? En bas de la page, tu peux laisser ta place au suivant et choisir quand on te recontacte (1 mois, 2 mois, 6 mois…).
 
 Bonne inspiration !
 Patrick"],
@@ -126,6 +126,18 @@ Merci d'avoir joué le jeu. Tu peux rejouer dans un nouveau cadavre depuis ton e
 {espace}
 
 Patrick"],
+        'rappel' => ['Rappel après une pause', 'On t\'avait promis de te recontacter : prêt(e) pour un cadavre exquis ?',
+"Bonjour {prenom},
+
+Il y a quelque temps, tu as laissé ta place dans un cadavre exquis faute de temps, en nous demandant de te recontacter. C'est le moment !
+
+Pour rejouer, un clic suffit : tu recevras la dernière photo d'un cadavre en cours et tu auras {delai} jours pour réaliser la tienne.
+{rejouer}
+
+Pas encore le bon moment ? Ignore simplement ce mail, tu pourras revenir quand tu veux depuis ton espace :
+{espace}
+
+Patrick"],
         'espace' => ['Lien de l\'espace personnel', 'Ton lien personnel – Cadavre exquis automatique',
 "Bonjour {prenom},
 
@@ -140,9 +152,40 @@ Patrick"],
 function assurer_schema(): void
 {
     foreach (schema_sql(cfg('db.driver')) as $sql) db()->exec($sql);
+    // Colonnes ajoutées après la première version
+    ajouter_colonne('participants', 'rappel_le', 'DATETIME NULL');
+    // 1.2.0 : le mail « c'est ton tour » présente l'option « recontacte-moi dans… » (seulement si la phrase d'origine n'a pas été modifiée)
+    q("UPDATE modeles_mail SET corps = REPLACE(corps, ?, ?) WHERE code = 'a_toi'", [
+        "Si tu ne peux finalement pas participer, clique sur « Je ne peux pas participer » en bas de la page : le cadavre continuera sans attendre.",
+        "Pas le temps en ce moment ? En bas de la page, tu peux laisser ta place au suivant et choisir quand on te recontacte (1 mois, 2 mois, 6 mois…).",
+    ]);
     foreach (modeles_defaut() as $code => [$lib, $suj, $corps]) {
         if (!qv('SELECT COUNT(*) FROM modeles_mail WHERE code = ?', [$code])) {
             insert('modeles_mail', ['code' => $code, 'libelle' => $lib, 'sujet' => $suj, 'corps' => $corps]);
         }
+    }
+}
+
+/** Ajoute une colonne si elle n'existe pas encore (MySQL et SQLite). */
+function ajouter_colonne(string $table, string $col, string $def): void
+{
+    try {
+        db()->query("SELECT $col FROM $table LIMIT 0");
+    } catch (Throwable $e) {
+        db()->exec("ALTER TABLE $table ADD COLUMN $col $def");
+    }
+}
+
+/** Met la base à jour quand schema.php change (appelé à chaque chargement, coût : un filemtime). */
+function maj_schema_si_besoin(): void
+{
+    $v = (string) @filemtime(__FILE__);
+    $f = DATA_DIR . '/schema_v.txt';
+    if (@file_get_contents($f) === $v) return;
+    try {
+        assurer_schema();
+        @file_put_contents($f, $v);
+    } catch (Throwable $e) {
+        // base pas encore installée : install.php s'en charge
     }
 }

@@ -2,6 +2,13 @@
 
 La version en ligne s'affiche en haut à droite de l'admin et sur https://cadavreexquisauto.schwaller.art/version.php
 
+## 1.2.0 – 18/11/2026
+- Page de dépôt : « Pas le temps en ce moment ? » — le participant laisse sa place au suivant et choisit quand être recontacté
+  (1, 2, 3, 6 mois ou 1 an) ; à la date prévue, il reçoit un mail avec un lien pour rejouer en un clic (nouveau modèle « Rappel après une pause »)
+- Espace personnel : date du rappel prévu et bouton pour l'annuler ; admin Participants : ⏰ date de rappel
+- Mail « c'est ton tour » : présente cette option
+- La base se met à jour toute seule quand une nouvelle version ajoute une colonne (plus besoin de passer par l'admin)
+
 ## 1.1.1 – 18/11/2026
 - Suppression de l'option « photos du cadavre classique » comme photos de départ (photos_depart_externes) :
   les départs viennent uniquement des photos ajoutées dans l'admin et des photos des cadavres automatiques

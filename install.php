@@ -1,6 +1,6 @@
 <?php
 require __DIR__ . '/inc/bootstrap.php';
-require __DIR__ . '/inc/schema.php';
+require_once __DIR__ . '/inc/schema.php';
 
 $checks = [
     'PHP 8.1 ou plus' => version_compare(PHP_VERSION, '8.1', '>='),

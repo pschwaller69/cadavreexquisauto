@@ -178,4 +178,6 @@ function require_admin(): array
 
 require_once __DIR__ . '/version.php';
 require_once __DIR__ . '/mailer.php';
+require_once __DIR__ . '/schema.php';
+maj_schema_si_besoin();
 require_once __DIR__ . '/logic.php';

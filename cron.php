@@ -49,10 +49,17 @@ if ($retards) {
     $log[] = count($retards) . ' alerte(s) de retard';
 }
 
-// 4. Inscrits en attente : placement, ouverture de nouveaux cadavres
+// 4. Rappels « recontacte-moi dans… » arrivés à échéance
+foreach (q('SELECT * FROM participants WHERE rappel_le IS NOT NULL AND rappel_le <= ?', [$n])->fetchAll() as $p) {
+    q('UPDATE participants SET rappel_le = NULL WHERE id = ?', [$p['id']]);
+    $libre = !$p['en_attente_depuis'] && !qv("SELECT COUNT(*) FROM maillons WHERE participant_id = ? AND statut = 'en_cours'", [$p['id']]);
+    if ($libre && mettre_en_file('rappel', $p['mail'], vars_mail($p), $p['prenom'] . ' ' . $p['nom'])) $log[] = "Rappel : {$p['prenom']} {$p['nom']}";
+}
+
+// 5. Inscrits en attente : placement, ouverture de nouveaux cadavres
 if ($k = placer_attente()) $log[] = "$k inscrit(s) placé(s)";
 
-// 5. File d'envoi des mails groupés
+// 6. File d'envoi des mails groupés
 if ($k = traiter_file((int) cfg('cron_mails_par_passage', 3))) $log[] = "$k mail(s) de la file envoyé(s), " . file_en_attente() . ' restant(s)';
 
 echo date('d/m/Y H:i') . ' – ' . ($log ? implode("\n", $log) : 'rien à faire') . "\n";

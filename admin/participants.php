@@ -75,7 +75,7 @@ entete('Participants', 'participants');
     <label class="case"><input type="checkbox" name="notif" value="1" <?= $fiche['notif'] ? 'checked' : '' ?>> Reçoit les mails « nouvelle photo »</label>
     <div class="actions"><button class="btn">Enregistrer</button>
       <a class="btn sec" href="<?= h(url('moi.php?u=' . $fiche['token'])) ?>" target="_blank">Son espace ↗</a></div>
-    <p class="petit">Inscrit le <?= fdate($fiche['date_inscription'], true) ?><?= $fiche['en_attente_depuis'] ? ' · en file d\'attente depuis le ' . fdate($fiche['en_attente_depuis'], true) . ' (rang ' . rang_attente($fiche) . ')' : '' ?></p>
+    <p class="petit">Inscrit le <?= fdate($fiche['date_inscription'], true) ?><?= $fiche['en_attente_depuis'] ? ' · en file d\'attente depuis le ' . fdate($fiche['en_attente_depuis'], true) . ' (rang ' . rang_attente($fiche) . ')' : '' ?><?= $fiche['rappel_le'] ? ' · à recontacter le ' . fdate($fiche['rappel_le']) : '' ?></p>
   </form>
   <div class="panneau">
     <h2 style="margin-top:0">Cadavres</h2>
@@ -100,7 +100,7 @@ entete('Participants', 'participants');
 <?php foreach ($liste as $p): ?>
 <tr><td><a href="?id=<?= $p['id'] ?>"><strong><?= h($p['nom']) ?></strong> <?= h($p['prenom']) ?></a></td><td><?= h($p['mail']) ?></td><td><?= h($p['club']) ?></td>
   <td><?= (int) $p['nb_rendus'] ?></td><td><?= (int) $p['nb_passes'] ?: '' ?></td>
-  <td><?= $p['en_jeu'] ? '<a href="chaine.php?id=' . (int) $p['en_jeu'] . '">' . badge('en_cours', 'en jeu') . '</a>' : ($p['en_attente_depuis'] ? badge('attente') : '') ?><?= $p['notif'] ? '' : ' <span class="petit" title="Ne reçoit pas les mails « nouvelle photo »">🔕</span>' ?></td>
+  <td><?= $p['en_jeu'] ? '<a href="chaine.php?id=' . (int) $p['en_jeu'] . '">' . badge('en_cours', 'en jeu') . '</a>' : ($p['en_attente_depuis'] ? badge('attente') : '') ?><?= $p['rappel_le'] ? ' <span class="petit" title="Rappel prévu">⏰ ' . fdate($p['rappel_le']) . '</span>' : '' ?><?= $p['notif'] ? '' : ' <span class="petit" title="Ne reçoit pas les mails « nouvelle photo »">🔕</span>' ?></td>
   <td><?= fdate($p['date_inscription']) ?></td></tr>
 <?php endforeach ?></table>
 

@@ -24,7 +24,8 @@ administration installable sur le téléphone. Les deux applis sont indépendant
 - **Rejouer** : case « Je veux rejouer » au dépôt, ou bouton dans l'espace personnel (`moi.php`).
   L'espace personnel montre ses cadavres, sa place dans la file et permet de couper les mails « nouvelle photo ».
 - **Retards** : relance à J+10, passage automatique au suivant 2 jours après la date limite (`auto_passer_jours`).
-  Le participant peut aussi se désister en un clic.
+  Le participant peut aussi laisser sa place s'il n'a pas le temps et choisir quand être recontacté (1 mois à 1 an) :
+  il reçoit alors un mail pour rejouer en un clic. Ou se désister définitivement.
 
 ## Mails automatiques (modifiables dans Admin > Mails)
 
@@ -36,6 +37,7 @@ administration installable sur le téléphone. Les deux applis sont indépendant
 | Merci + lien du résultat | dès le dépôt |
 | Nouvelle photo | aux participants précédents du cadavre, à chaque photo ajoutée (file d'envoi) |
 | Cadavre terminé | à tous les participants du cadavre, à la 15e photo (file d'envoi) |
+| Rappel après une pause | à la date choisie par celui qui a laissé sa place (« recontacte-moi dans… ») |
 | Lien de l'espace | si quelqu'un se réinscrit avec la même adresse alors qu'il joue déjà |
 
 Les mails « nouvelle photo » et « terminé » partent par la tâche cron, 3 par passage (toutes les 5 min).

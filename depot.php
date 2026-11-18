@@ -12,6 +12,10 @@ if ($m && $_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         check_csrf();
         try {
+            if (post('action') === 'reporter') {
+                reporter_maillon($m, (int) post('mois'));
+                redirect(url('depot.php?t=' . urlencode($t)));
+            }
             if (post('action') === 'desister') {
                 passer_maillon($m, 'Désistement du participant');
                 redirect(url('depot.php?t=' . urlencode($t)));
@@ -37,6 +41,12 @@ $prec = $m ? photo_precedente($m) : null;
 
 <?php if (!$m): ?>
   <p class="alerte ko">Ce lien n'est pas valide. Vérifie qu'il a été copié en entier depuis ton mail.</p>
+
+<?php elseif ($m['statut'] === 'passe' && $p['rappel_le'] && str_starts_with((string) $m['note'], 'Pas le temps')): ?>
+  <p class="alerte ok">C'est noté <?= h($p['prenom']) ?> : ta place a été laissée au participant suivant et nous te recontacterons
+    le <strong><?= fdate($p['rappel_le']) ?></strong> pour te proposer un nouveau cadavre.</p>
+  <p class="petit">Tu peux revenir plus tôt (ou changer d'avis) depuis ton espace.</p>
+  <p><a class="btn" href="moi.php?u=<?= h($p['token']) ?>">Mon espace</a></p>
 
 <?php elseif ($m['statut'] === 'passe'): ?>
   <p>Bonjour <?= h($p['prenom']) ?>, ce lien n'est plus actif : le cadavre n°<?= (int) $ch['numero'] ?> a continué avec un autre participant.</p>
@@ -78,10 +88,19 @@ $prec = $m ? photo_precedente($m) : null;
       montrée aux participants du cadavre et utilisée comme photo de départ d'un autre cadavre.</label>
     <button class="btn" id="go">Envoyer ma photo</button>
   </form>
-  <form method="post" class="desister" onsubmit="return confirm('Confirmer : tu ne participes pas et le cadavre passe à quelqu\'un d\'autre ?')">
-    <?= csrf_field() ?><input type="hidden" name="action" value="desister">
-    <button class="lien">Je ne peux finalement pas participer</button>
-  </form>
+  <div class="pause">
+    <p><strong>Pas le temps en ce moment ?</strong> Laisse ta place au suivant, on te recontacte plus tard pour un autre cadavre.</p>
+    <form method="post" class="actions" onsubmit="return confirm('Laisser ta place dans ce cadavre ? Tu recevras un mail à la date choisie pour rejouer.')">
+      <?= csrf_field() ?><input type="hidden" name="action" value="reporter">
+      <label class="inline">Recontacte-moi dans
+        <select name="mois"><?php foreach (delais_report() as $k => $lib): ?><option value="<?= $k ?>" <?= $k === 2 ? 'selected' : '' ?>><?= $lib ?></option><?php endforeach ?></select></label>
+      <button class="btn sec">Je laisse ma place pour l'instant</button>
+    </form>
+    <form method="post" class="desister" onsubmit="return confirm('Confirmer : tu ne participes pas et le cadavre passe à quelqu\'un d\'autre ?')">
+      <?= csrf_field() ?><input type="hidden" name="action" value="desister">
+      <button class="lien">Je ne peux pas participer du tout</button>
+    </form>
+  </div>
   <script>
     const f = document.getElementById('photo'), ap = document.getElementById('apercu'), max = <?= (int) cfg('upload_max_mo') ?> * 1048576;
     f.addEventListener('change', () => {

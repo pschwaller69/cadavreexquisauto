@@ -128,3 +128,8 @@ fieldset.choix-type legend { color: var(--doux); font-size: 14px; padding: 0 4px
 .mes-cadavres a { display: flex; gap: 12px; align-items: center; text-decoration: none; color: inherit; padding: 8px; border-radius: 8px; background: var(--fond3); }
 .mes-cadavres img { width: 72px; height: 72px; object-fit: cover; border-radius: 6px; }
 @media (max-width: 600px) { .stats-pub { grid-template-columns: repeat(2, 1fr); } }
+.pause { margin-top: 26px; padding: 14px 16px; border-radius: 8px; background: var(--fond3); }
+.pause p { margin: 0 0 8px; }
+.pause .actions { align-items: center; margin: 0 0 6px; }
+.pause label.inline { display: inline-flex; align-items: center; gap: 8px; margin: 0; }
+.pause select { width: auto; }

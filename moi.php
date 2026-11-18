@@ -11,12 +11,10 @@ if ($p && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $en_jeu = qv("SELECT COUNT(*) FROM maillons WHERE participant_id = ? AND statut = 'en_cours'", [$p['id']]);
     switch (post('action')) {
         case 'rejouer':
-            if (!$en_jeu && !$p['en_attente_depuis']) {
-                update('participants', (int) $p['id'], ['en_attente_depuis' => now()]);
-                placer_attente();
-                $p = participant((int) $p['id']);
-                if (!q1("SELECT id FROM maillons WHERE participant_id = ? AND statut = 'en_cours'", [$p['id']])) envoyer_bienvenue($p);
-            }
+            rejouer($p);
+            break;
+        case 'annuler_rappel':
+            q('UPDATE participants SET rappel_le = NULL WHERE id = ?', [$p['id']]);
             break;
         case 'quitter_file':
             q('UPDATE participants SET en_attente_depuis = NULL WHERE id = ?', [$p['id']]);
@@ -55,8 +53,13 @@ if ($p) {
     <form method="post" onsubmit="return confirm('Quitter la file d\'attente ?')"><?= csrf_field() ?><input type="hidden" name="action" value="quitter_file">
       <button class="lien">Quitter la file d'attente</button></form>
   <?php else: ?>
+    <?php if (get('rejouer')): ?><p class="alerte info">Content de te revoir ! Un clic et tu es dans la partie :</p><?php endif ?>
     <form method="post"><?= csrf_field() ?><input type="hidden" name="action" value="rejouer">
       <button class="btn">Rejouer dans un nouveau cadavre</button></form>
+    <?php if ($p['rappel_le']): ?>
+      <p class="petit" style="margin-top:10px">Nous te recontacterons le <?= fdate($p['rappel_le']) ?>.</p>
+      <form method="post"><?= csrf_field() ?><input type="hidden" name="action" value="annuler_rappel"><button class="lien">Annuler ce rappel</button></form>
+    <?php endif ?>
   <?php endif ?>
 
   <h2>Mes cadavres</h2>

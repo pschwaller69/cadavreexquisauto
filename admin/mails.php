@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $vars = ['prenom' => 'Patrick', 'nom' => 'TEST', 'club' => 'Club test', 'mail' => $a['mail'], 'delai' => cfg('delai_jours'),
                  'total' => total_photos(), 'site' => url(), 'espace' => url('moi.php?u=exemple'), 'numero' => 12,
                  'lien' => url('depot.php?t=exemple'), 'resultat' => url('resultat.php?t=exemple'), 'position' => 4, 'nb_photos' => 5,
-                 'auteur' => 'Marie DUPONT', 'rang' => 3, 'phrase_rang' => phrase_rang(3),
+                 'auteur' => 'Marie DUPONT', 'rejouer' => url('moi.php?u=exemple&rejouer=1'), 'rang' => 3, 'phrase_rang' => phrase_rang(3),
                  'date_limite' => fdate(plus_jours(now(), (int) cfg('delai_jours')))];
         $ok = envoyer_mail($a['mail'] ?: cfg('mail.admin'), '[TEST] ' . remplir($mod['sujet'], $vars), remplir($mod['corps'], $vars));
         flash($ok ? 'Mail de test envoyé à ' . ($a['mail'] ?: cfg('mail.admin')) . '.' : 'Échec de l\'envoi : voir le journal ci-dessous.', $ok ? 'ok' : 'ko');
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     redirect('mails.php' . ($code ? '#' . $code : ''));
 }
 
-$mods = q("SELECT * FROM modeles_mail ORDER BY CASE code WHEN 'bienvenue' THEN 1 WHEN 'a_toi' THEN 2 WHEN 'relance' THEN 3 WHEN 'merci' THEN 4 WHEN 'nouvelle_photo' THEN 5 WHEN 'termine' THEN 6 ELSE 7 END")->fetchAll();
+$mods = q("SELECT * FROM modeles_mail ORDER BY CASE code WHEN 'bienvenue' THEN 1 WHEN 'a_toi' THEN 2 WHEN 'relance' THEN 3 WHEN 'merci' THEN 4 WHEN 'nouvelle_photo' THEN 5 WHEN 'termine' THEN 6 WHEN 'rappel' THEN 7 ELSE 8 END")->fetchAll();
 $journal = q('SELECT * FROM journal_mails ORDER BY id DESC LIMIT 150')->fetchAll();
 $file = q("SELECT * FROM file_envoi WHERE statut IN ('attente','erreur') ORDER BY statut DESC, id LIMIT 100")->fetchAll();
 $nb_file = file_en_attente();
@@ -45,7 +45,7 @@ entete('Mails', 'mails');
 <h1>Mails automatiques</h1>
 <?php if (cfg('mail.mode') !== 'smtp'): ?><p class="alerte info">Mode « log » : aucun mail n'est réellement envoyé (voir config.php).</p><?php endif ?>
 <p class="petit">Variables : {prenom} {nom} {club} {mail} {numero} (n° du cadavre) {position} (n° de la photo) {total} {nb_photos} {lien} (dépôt) {resultat} (le cadavre)
-  {espace} (espace personnel) {date_limite} {delai} {site} — nouvelle photo : {auteur} — bienvenue : {rang} {phrase_rang}.
+  {espace} (espace personnel) {rejouer} (rejouer en un clic) {date_limite} {delai} {site} — nouvelle photo : {auteur} — bienvenue : {rang} {phrase_rang}.
   Les liens sont rendus cliquables automatiquement. Expéditeur : <?= h(cfg('mail.from')) ?>.</p>
 
 <h2 style="margin-top:0">File d'envoi (mails groupés)</h2>

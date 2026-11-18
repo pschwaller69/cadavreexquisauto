@@ -214,6 +214,7 @@ function vars_mail(array $p, ?array $m = null): array
         'prenom' => $p['prenom'], 'nom' => $p['nom'], 'club' => $p['club'], 'mail' => $p['mail'],
         'delai' => cfg('delai_jours', 14), 'total' => total_photos(), 'site' => url(),
         'espace' => url('moi.php?u=' . $p['token']),
+        'rejouer' => url('moi.php?u=' . $p['token'] . '&rejouer=1'),
     ];
     if ($m) {
         $ch = chaine((int) $m['chaine_id']);
@@ -357,7 +358,7 @@ function inscrire(string $nom, string $prenom, string $mail, string $club): arra
             return ['etat' => 'deja', 'participant' => $p];
         }
         update('participants', (int) $p['id'], ['nom' => nom_propre($nom), 'prenom' => prenom_propre($prenom),
-            'club' => club_inscription($club), 'en_attente_depuis' => now()]);
+            'club' => club_inscription($club), 'en_attente_depuis' => now(), 'rappel_le' => null]);
         $etat = 'retour';
     } else {
         $id = insert('participants', [
@@ -442,6 +443,29 @@ function passer_maillon(array $m, string $raison = ''): void
     update('maillons', (int) $m['id'], ['statut' => 'passe', 'date_retour' => now(), 'note' => $raison ?: null]);
     if (chaine((int) $m['chaine_id'])['statut'] !== 'terminee') update('chaines', (int) $m['chaine_id'], ['statut' => 'attente', 'attente_depuis' => now()]);
     placer_attente();
+}
+
+/** Reports possibles (« recontacte-moi dans… ») : mois => libellé */
+function delais_report(): array { return [1 => '1 mois', 2 => '2 mois', 3 => '3 mois', 6 => '6 mois', 12 => '1 an']; }
+
+/** Le participant laisse sa place faute de temps et demande à être recontacté dans N mois. */
+function reporter_maillon(array $m, int $mois): string
+{
+    if (!isset(delais_report()[$mois])) $mois = 1;
+    $quand = date('Y-m-d 10:00:00', strtotime("+$mois months"));
+    passer_maillon($m, 'Pas le temps : rappel dans ' . delais_report()[$mois]);
+    q('UPDATE participants SET rappel_le = ?, en_attente_depuis = NULL WHERE id = ?', [$quand, $m['participant_id']]);
+    return $quand;
+}
+
+/** Remet un participant libre en file d'attente (rejouer) et le place si possible. */
+function rejouer(array $p): void
+{
+    if (qv("SELECT COUNT(*) FROM maillons WHERE participant_id = ? AND statut = 'en_cours'", [$p['id']]) || $p['en_attente_depuis']) return;
+    q('UPDATE participants SET en_attente_depuis = ?, rappel_le = NULL WHERE id = ?', [now(), $p['id']]);
+    placer_attente();
+    $p = participant((int) $p['id']);
+    if (!q1("SELECT id FROM maillons WHERE participant_id = ? AND statut = 'en_cours'", [$p['id']])) envoyer_bienvenue($p);
 }
 
 /** Supprime un cadavre, ses maillons et ses photos (les participants restent). */
