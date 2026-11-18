@@ -43,11 +43,6 @@ return [
     'cadavres_max'        => 40, // plafond de cadavres en cours en même temps
     'club_tolerance_jours' => 3, // au-delà de N jours d'attente, on accepte deux photos du même club à la suite
 
-    // Photos de départ (tirées au sort) : photos des autres cadavres de cette appli, photos ajoutées dans l'admin,
-    // et éventuellement les photos du cadavre exquis classique (dossier data/photos de cadavreexquis.schwaller.art).
-    // Laisser '' pour ne pas l'utiliser. Exemple : '/home/VOTRE_COMPTE/cadavreexquis.schwaller.art/data/photos'
-    'photos_depart_externes' => '',
-
     // Photos
     'upload_max_mo'      => 30,
     'reduite_px'         => 2000, // plus grand côté de la version réduite (envoyée au suivant / affichée)

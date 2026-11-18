@@ -51,8 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $seeds = q('SELECT * FROM photos_depart ORDER BY id DESC')->fetchAll();
 $utilisees = array_count_values(q('SELECT depart_cle FROM chaines WHERE depart_cle IS NOT NULL')->fetchAll(PDO::FETCH_COLUMN));
 $nb_cadavres = (int) qv("SELECT COUNT(*) FROM maillons WHERE statut = 'rendu'");
-$ext_dir = trim((string) cfg('photos_depart_externes', ''));
-$externes = photos_externes();
 $pool = pool_depart();
 $neuves = count(array_diff_key($pool, $utilisees));
 
@@ -60,27 +58,12 @@ entete('Photos de départ', 'depart');
 ?>
 <h1>Photos de départ</h1>
 <p>Chaque nouveau cadavre démarre d'une photo <strong>tirée au sort</strong> parmi : les photos déjà déposées dans les autres cadavres,
-  les photos ajoutées ici et, si configuré, celles du cadavre exquis classique. Les photos jamais utilisées comme départ sont tirées en priorité.</p>
+  et les photos ajoutées ici. Les photos jamais utilisées comme départ sont tirées en priorité.</p>
 <div class="stats">
   <div class="stat"><b><?= count($pool) ?></b><span>photos possibles</span></div>
   <div class="stat"><b><?= $neuves ?></b><span>jamais tirées</span></div>
   <div class="stat"><b><?= $nb_cadavres ?></b><span>des cadavres</span></div>
   <div class="stat"><b><?= count(array_filter($seeds, fn($s) => $s['actif'])) ?></b><span>ajoutées ici</span></div>
-  <div class="stat"><b><?= count($externes) ?></b><span>du cadavre classique</span></div>
-</div>
-
-<div class="panneau" style="margin-bottom:18px">
-  <strong>Cadavre exquis classique</strong> –
-  <?php if ($ext_dir === ''): ?>
-    non utilisé. Pour piocher dans ses photos, indiquez dans config.php :
-    <code>'photos_depart_externes' => '/home/VOTRE_COMPTE/cadavreexquis.schwaller.art/data/photos'</code>
-  <?php elseif (!is_dir($ext_dir)): ?>
-    <span class="badge passe">dossier introuvable</span> <code><?= h($ext_dir) ?></code> (vérifiez le chemin dans config.php).
-  <?php else: ?>
-    <span class="badge rendu">actif</span> <?= count($externes) ?> photo(s) dans <code><?= h($ext_dir) ?></code>.
-    <?php if ($externes): ?><details><summary class="petit" style="cursor:pointer">Aperçu</summary><div class="vignettes" style="margin-top:8px">
-      <?php foreach (array_slice($externes, 0, 60) as $x): ?><img src="../img.php?x=<?= md5($x) ?>" title="<?= h(credit_externe($x)) ?>" loading="lazy"><?php endforeach ?></div></details><?php endif ?>
-  <?php endif ?>
 </div>
 
 <form method="post" enctype="multipart/form-data" class="form panneau" style="max-width:640px;margin-bottom:18px"><?= csrf_field() ?><input type="hidden" name="action" value="ajouter">

@@ -2,6 +2,10 @@
 
 La version en ligne s'affiche en haut à droite de l'admin et sur https://cadavreexquisauto.schwaller.art/version.php
 
+## 1.1.1 – 18/11/2026
+- Suppression de l'option « photos du cadavre classique » comme photos de départ (photos_depart_externes) :
+  les départs viennent uniquement des photos ajoutées dans l'admin et des photos des cadavres automatiques
+
 ## 1.1.0 – 18/11/2026
 - Admin > **QR code** : QR code de la page d'inscription, mode événement plein écran (tablette, vidéoprojecteur),
   affiche A4 à imprimer, téléchargement PNG 2000 px et SVG ; raccourci « QR code (événement) » dans l'appli admin installée
@@ -15,7 +19,7 @@ La version en ligne s'affiche en haut à droite de l'admin et sur https://cadavr
 ## 1.0.0 – 18/11/2026
 Première version du cadavre exquis automatique (construit à partir du cadavre exquis classique v1.13.0).
 - Jeu continu, sans édition : inscription à tout moment, cadavres de 15 photos
-- Photo de départ tirée au sort parmi les photos des autres cadavres (+ photos ajoutées dans l'admin, + cadavre classique en option)
+- Photo de départ tirée au sort parmi les photos des autres cadavres (+ photos ajoutées dans l'admin)
 - Nombre de cadavres en cours ajusté automatiquement selon les inscrits en attente
 - Lien du cadavre envoyé dès le dépôt, mail à chaque nouvelle photo puis à la fin du cadavre
 - Espace personnel : ses cadavres, sa place dans la file, rejouer, couper les mails

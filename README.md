@@ -9,7 +9,7 @@ administration installable sur le téléphone. Les deux applis sont indépendant
 - **Pas d'édition, pas de date** : le jeu tourne en continu. On s'inscrit quand on veut sur la page d'accueil.
 - **Cadavres de 15 photos** (`photos_par_cadavre`). Un cadavre est terminé à sa 15e photo.
 - **Photo de départ tirée au sort** parmi les photos des autres cadavres (en priorité celles jamais tirées),
-  les photos ajoutées dans l'admin (*Photos de départ*) et, si on le veut, celles du cadavre classique.
+  et les photos ajoutées dans l'admin (*Photos de départ*).
 - **Nombre de cadavres automatique** :
   - un inscrit est placé tout de suite dans un cadavre libre, le plus avancé d'abord (pour les terminer) ;
   - jamais deux fois dans le même cadavre, jamais deux photos du même club à la suite
@@ -56,14 +56,11 @@ Gmail limite à environ 500 mails par jour : largement suffisant pour plusieurs 
 ### 3. Configuration
 1. Copier `config.sample.php` en `config.php` et remplir : la base MySQL, le bloc `mail` (même Gmail et même mot de passe d'application
    que le cadavre classique si vous voulez), `mail.admin`, et changer `cron_key`.
-2. Facultatif : pour piocher les photos de départ dans le cadavre classique, mettre
-   `'photos_depart_externes' => '/home/VOTRE_COMPTE/cadavreexquis.schwaller.art/data/photos'`
-   (le nom du compte est visible en haut à droite de cPanel ou dans le chemin du Gestionnaire de fichiers).
-3. Ouvrir `https://cadavreexquisauto.schwaller.art/install.php` : contrôles, création des tables et du compte admin.
-4. **Supprimer `install.php`.**
-5. cPanel > **Sélectionner une version de PHP** > Options : `upload_max_filesize` = 32M, `post_max_size` = 128M
+2. Ouvrir `https://cadavreexquisauto.schwaller.art/install.php` : contrôles, création des tables et du compte admin.
+3. **Supprimer `install.php`.**
+4. cPanel > **Sélectionner une version de PHP** > Options : `upload_max_filesize` = 32M, `post_max_size` = 128M
    (o2switch ignore `.user.ini` : sans ça, les photos de plus de 2 Mo sont refusées).
-6. Vérifier que `https://cadavreexquisauto.schwaller.art/config.php` et `/data/photos/` répondent « 403 Forbidden ».
+5. Vérifier que `https://cadavreexquisauto.schwaller.art/config.php` et `/data/photos/` répondent « 403 Forbidden ».
 
 ### 4. Tâche cron (indispensable)
 cPanel > **Tâches Cron**, toutes les 5 minutes :
@@ -73,7 +70,7 @@ cPanel > **Tâches Cron**, toutes les 5 minutes :
 Elle envoie les relances, passe les retardataires, place les inscrits en attente et envoie les mails « nouvelle photo ».
 
 ### 5. Avant d'ouvrir
-1. Admin > **Photos de départ** : ajouter quelques photos (ou activer le cadavre classique, voir 3.2). Sans photo de départ, aucun cadavre ne peut s'ouvrir.
+1. Admin > **Photos de départ** : ajouter quelques photos. Sans photo de départ, aucun cadavre ne peut s'ouvrir.
 2. Admin > **Mails** > « M'envoyer un test ».
 3. Diffuser `https://cadavreexquisauto.schwaller.art`.
 
@@ -88,7 +85,6 @@ Elle envoie les relances, passe les retardataires, place les inscrits en attente
 | `cadavres_max` | 40 | nombre maximum de cadavres en cours |
 | `club_tolerance_jours` | 3 | au-delà, deux photos du même club peuvent se suivre |
 | `cron_mails_par_passage` | 3 | mails de la file envoyés toutes les 5 min |
-| `photos_depart_externes` | '' | dossier photos du cadavre classique |
 
 ## Administration
 - **Tableau de bord** : cadavres en cours (vignettes, qui a la main, retards), file d'attente, boutons « Placer » et « Ouvrir un cadavre ».

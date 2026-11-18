@@ -36,8 +36,7 @@ if (!$deja && $_SERVER['REQUEST_METHOD'] === 'POST' && $checks['Connexion base d
 <?php if ($msg): ?><p class="alerte ko"><?= h($msg) ?></p><?php endif ?>
 <?php if ($deja): ?>
   <p class="alerte ok">L'application est installée (tables à jour). <strong>Supprimez install.php du serveur.</strong></p>
-  <p>Avant d'ouvrir les inscriptions, ajoutez quelques <strong>photos de départ</strong> dans l'admin
-     (ou renseignez <code>photos_depart_externes</code> dans config.php pour piocher dans le cadavre classique).</p>
+  <p>Avant d'ouvrir les inscriptions, ajoutez quelques <strong>photos de départ</strong> dans l'admin.</p>
   <p><a class="btn" href="admin/">Aller à l'administration</a></p>
 <?php elseif ($checks['Connexion base de données']): ?>
   <h2>Premier compte administrateur</h2>

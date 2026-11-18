@@ -140,11 +140,11 @@ function dossier_chaine(array $ch): string { return 'cadavres/' . sprintf('%04d'
 
 // ---------------------------------------------------------------- photos de départ (tirage au sort)
 /**
- * Toutes les photos pouvant servir de départ : photos rendues des cadavres de cette appli,
- * photos ajoutées par l'admin, et photos du cadavre classique (config photos_depart_externes).
+ * Toutes les photos pouvant servir de départ : photos rendues des cadavres de cette appli
+ * et photos ajoutées par l'admin.
  * Chaque entrée : cle (unique), abs (chemin du fichier), credit.
  */
-function pool_depart(bool $avec_externes = true): array
+function pool_depart(): array
 {
     $pool = [];
     foreach (q("SELECT m.id, m.photo_reduite, m.titre, c.numero, p.prenom, p.nom FROM maillons m
@@ -160,38 +160,7 @@ function pool_depart(bool $avec_externes = true): array
             $pool['d:' . $d['id']] = ['cle' => 'd:' . $d['id'], 'abs' => $abs, 'chaine' => 0, 'credit' => $d['credit'] ?: 'Photo de départ'];
         }
     }
-    if ($avec_externes) foreach (photos_externes() as $abs) {
-        $pool['x:' . md5($abs)] = ['cle' => 'x:' . md5($abs), 'abs' => $abs, 'chaine' => 0, 'credit' => credit_externe($abs)];
-    }
     return $pool;
-}
-
-/** Versions réduites du cadavre exquis classique (fichiers « … reduite.jpg »). Liste mise en cache 1 h. */
-function photos_externes(): array
-{
-    $dir = trim((string) cfg('photos_depart_externes', ''));
-    if ($dir === '' || !is_dir($dir)) return [];
-    $cache = DATA_DIR . '/externes.json';
-    if (is_file($cache) && filemtime($cache) > time() - 3600) {
-        $l = json_decode((string) file_get_contents($cache), true);
-        if (is_array($l)) return array_values(array_filter($l, 'is_file'));
-    }
-    $l = [];
-    try {
-        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS)) as $f) {
-            if ($f->isFile() && preg_match('/ reduite\.jpe?g$/i', $f->getFilename())) $l[] = $f->getPathname();
-        }
-    } catch (Throwable $e) { return []; }
-    @file_put_contents($cache, json_encode($l));
-    return $l;
-}
-
-/** « 03 Marie DUPONT reduite.jpg » -> « Photo de Marie DUPONT (cadavre exquis classique) » */
-function credit_externe(string $abs): string
-{
-    $n = preg_replace('/ reduite\.jpe?g$/i', '', basename($abs));
-    $n = trim(preg_replace('/^\d+\s+/', '', $n));
-    return $n !== '' && stripos($n, 'base') === false ? "Photo de $n (cadavre exquis classique)" : 'Photo du cadavre exquis classique';
 }
 
 /** Tire au sort une photo de départ : de préférence jamais utilisée comme départ. */
@@ -228,7 +197,7 @@ function creer_chaine(): ?array
         if (!is_file($f) || filemtime($f) < time() - 86400) {
             @touch($f);
             mail_admin('Aucune photo de départ', "Des inscrits attendent mais aucun cadavre ne peut être ouvert : il n'y a aucune photo de départ.\n"
-                . "Ajoutez des photos dans l'admin (Photos de départ) ou renseignez photos_depart_externes dans config.php.\n\n" . url('admin/depart.php'));
+                . "Ajoutez des photos dans l'admin (Photos de départ).\n\n" . url('admin/depart.php'));
         }
         return null;
     }

@@ -6,6 +6,5 @@ data/photos/*
 !data/photos/.gitkeep
 data/sessions/
 inc/deploy.txt
-data/externes.json
 data/*.txt
 data/*.lock

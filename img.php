@@ -32,9 +32,6 @@ if (($t = get('t')) !== '') {
         $rel = get('v') === 'o' ? ($m['photo'] ?? null) : ($m['photo_reduite'] ?? null);
     } elseif (get('s') !== '') {
         $rel = qv('SELECT fichier FROM photos_depart WHERE id = ?', [(int) get('s')]) ?: null;
-    } elseif (get('x') !== '') {
-        // Aperçu d'une photo externe (cadavre classique) dans l'admin
-        foreach (photos_externes() as $f) if (md5($f) === get('x')) { $abs = $f; break; }
     }
 }
 
