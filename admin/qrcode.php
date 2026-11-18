@@ -11,11 +11,11 @@ entete('QR code', 'qrcode');
   .qr-zone { display: grid; grid-template-columns: minmax(260px, 420px) 1fr; gap: 28px; align-items: start; }
   .qr-boite { background: #fff; border-radius: 12px; padding: 18px; }
   .qr-boite svg { display: block; width: 100%; height: auto; }
-  #evenement { position: fixed; inset: 0; z-index: 100; background: radial-gradient(ellipse at top, #24123f 0%, #0d0d12 65%); color: #fff;
+  #evenement { position: fixed; inset: 0; z-index: 100; background: radial-gradient(ellipse at top, #0b2a3a 0%, #0d0d12 65%); color: #fff;
     display: none; flex-direction: column; align-items: center; justify-content: center; gap: 2.5vh; text-align: center; padding: 3vh; cursor: pointer; }
   #evenement.on { display: flex; }
   #evenement h1 { margin: 0; font-size: 6vh; font-weight: 300; letter-spacing: 1px; }
-  #evenement h1 b { color: #a774ff; font-weight: 700; }
+  #evenement h1 b { color: #4cc6f0; font-weight: 700; }
   #evenement .qr-boite { padding: 2.5vh; width: min(62vh, 82vw); }
   #evenement .appel { font-size: 4vh; margin: 0; }
   #evenement .url { font-size: 2.6vh; color: #bbb; margin: 0; }
@@ -30,7 +30,7 @@ entete('QR code', 'qrcode');
     #affiche { display: flex !important; }
   }
   #affiche { display: none; flex-direction: column; align-items: center; text-align: center; gap: 8mm; color: #000; padding-top: 10mm; }
-  #affiche h1 { font-size: 30pt; margin: 0; color: #000; } #affiche h1 b { color: #7c3aed; }
+  #affiche h1 { font-size: 30pt; margin: 0; color: #000; } #affiche h1 b { color: #0b7fb0; }
   #affiche .qr-boite { width: 130mm; padding: 0; }
   #affiche p { margin: 0; font-size: 16pt; } #affiche .url { font-size: 13pt; color: #444; }
 </style>

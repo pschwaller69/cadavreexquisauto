@@ -2,6 +2,10 @@
 
 La version en ligne s'affiche en haut à droite de l'admin et sur https://cadavreexquisauto.schwaller.art/version.php
 
+## 1.4.0 – 18/11/2026
+- Nouveau code couleur bleu turquoise (site, admin, pages résultat, mails, QR code) et logo recoloré,
+  pour ne plus confondre avec le cadavre exquis classique (violet)
+
 ## 1.3.1 – 18/11/2026
 - Inscription : le club se choisit dans une liste déroulante (clubs du cadavre inter-clubs + clubs déjà saisis,
   « Pas de club », « Autre club… ») au lieu d'un champ à suggestions qui s'affichait mal sur téléphone

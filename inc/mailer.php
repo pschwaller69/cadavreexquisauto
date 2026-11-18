@@ -25,7 +25,7 @@ function remplir(string $txt, array $vars): string
 function texte_vers_html(string $txt): string
 {
     $html = h($txt);
-    $html = preg_replace('~(https?://[^\s<]+)~', '<a href="$1" style="color:#7c3aed">$1</a>', $html);
+    $html = preg_replace('~(https?://[^\s<]+)~', '<a href="$1" style="color:#0b7fb0">$1</a>', $html);
     $html = nl2br($html);
     return '<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#222;max-width:640px">' . $html . '</div>';
 }

@@ -24,15 +24,15 @@ function afficher_cadavre(array $ch, callable $src, array $opt = []): void
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; background: #0d0d12; color: #eee; font-family: "Segoe UI", system-ui, sans-serif; }
-  a { color: #b98cff; }
+  a { color: #8adcf7; }
   header { padding: 22px 4vw 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; }
   header h1 { margin: 0; font-weight: 300; font-size: 30px; letter-spacing: 1px; }
-  header h1 b { color: #a774ff; font-weight: 700; }
+  header h1 b { color: #4cc6f0; font-weight: 700; }
   .etat { color: #aaa; font-size: 15px; }
   .barre-prog { flex: 1 1 220px; max-width: 360px; height: 8px; background: #26262f; border-radius: 4px; overflow: hidden; }
-  .barre-prog i { display: block; height: 100%; background: linear-gradient(90deg, #7c3aed, #b98cff); }
+  .barre-prog i { display: block; height: 100%; background: linear-gradient(90deg, #0b7fb0, #8adcf7); }
   .outils { margin-left: auto; display: flex; gap: 8px; }
-  .outils a, .outils button { background: #8b45ff; color: #fff; border: 0; border-radius: 6px; padding: 9px 14px; font: 14px sans-serif; cursor: pointer; text-decoration: none; }
+  .outils a, .outils button { background: #0fa3d8; color: #fff; border: 0; border-radius: 6px; padding: 9px 14px; font: 14px sans-serif; cursor: pointer; text-decoration: none; }
   .outils a.sec { background: #2a2a35; }
   .intro { padding: 0 4vw; color: #bbb; max-width: 900px; }
   .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; padding: 18px 4vw 50px; }
@@ -40,15 +40,15 @@ function afficher_cadavre(array $ch, callable $src, array $opt = []): void
   .carte .img { aspect-ratio: 1; background: #000; display: flex; align-items: center; justify-content: center; cursor: zoom-in; }
   .carte .img img { max-width: 100%; max-height: 100%; display: block; }
   .carte .txt { padding: 10px 12px 12px; font-size: 14px; line-height: 1.4; }
-  .carte .n { color: #a774ff; font-weight: 700; margin-right: 6px; }
+  .carte .n { color: #4cc6f0; font-weight: 700; margin-right: 6px; }
   .carte .club { color: #999; }
   .carte .titre { font-style: italic; color: #ddd; }
-  .carte .dem { color: #bbb; font-style: italic; font-size: 13px; border-left: 2px solid #8b45ff; padding-left: 8px; margin-top: 6px; white-space: pre-line; }
-  .carte.depart { outline: 2px solid #8b45ff; }
+  .carte .dem { color: #bbb; font-style: italic; font-size: 13px; border-left: 2px solid #0fa3d8; padding-left: 8px; margin-top: 6px; white-space: pre-line; }
+  .carte.depart { outline: 2px solid #0fa3d8; }
   .carte.moi { outline: 2px solid #3ecf8e; }
   .carte.moi .n::after { content: " · ta photo"; color: #3ecf8e; font-weight: 400; }
   .carte.vide .img { cursor: default; color: #444; font-size: 54px; background: repeating-linear-gradient(45deg, #121218, #121218 10px, #15151c 10px, #15151c 20px); }
-  .carte.vide.cours .img { color: #a774ff; }
+  .carte.vide.cours .img { color: #4cc6f0; }
   .carte.vide .txt { color: #666; }
   #diapo { position: fixed; inset: 0; background: #000; z-index: 50; display: none; flex-direction: column; align-items: center; justify-content: center; }
   #diapo.on { display: flex; }

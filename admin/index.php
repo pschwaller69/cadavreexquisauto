@@ -68,7 +68,7 @@ entete('Tableau de bord', 'index');
   <div class="ch">
     <h3><a href="chaine.php?id=<?= $ch['id'] ?>">Cadavre n°<?= (int) $ch['numero'] ?></a> <?= badge($ch['statut']) ?> <span class="petit"><?= count($rendus) ?>/<?= total_photos() ?></span></h3>
     <div class="vignettes">
-      <img src="../img.php?d=<?= $ch['id'] ?>" title="Départ : <?= h($ch['depart_credit']) ?>" style="outline:2px solid var(--violet)">
+      <img src="../img.php?d=<?= $ch['id'] ?>" title="Départ : <?= h($ch['depart_credit']) ?>" style="outline:2px solid var(--accent)">
       <?php foreach ($rendus as $m): ?><img src="../img.php?m=<?= $m['id'] ?>" title="<?= h($m['prenom'] . ' ' . $m['nom']) ?>" loading="lazy"><?php endforeach ?>
       <?php if ($cours): ?><div class="vide">?</div><?php endif ?>
     </div>
