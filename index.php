@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!post('accord')) {
         $err = 'Merci d\'accepter le règlement.';
     } else {
-        $res = inscrire(post('nom'), post('prenom'), post('mail'), post('club'));
+        $res = inscrire(post('nom'), post('prenom'), post('mail'), post('club') === '__autre' ? post('club_autre') : post('club'));
     }
 }
 
@@ -93,10 +93,20 @@ function bloc_partage(): string
       <label>Nom<input name="nom" required value="<?= h(post('nom')) ?>" autocomplete="family-name"></label>
     </div>
     <label>Adresse mail<input name="mail" type="email" required value="<?= h(post('mail')) ?>" autocomplete="email"></label>
-    <label>Club photo (facultatif)
-      <input name="club" list="clubs" value="<?= h(post('club')) ?>" placeholder="Laisser vide si pas de club">
-      <datalist id="clubs"><?php foreach ($clubs as $c): ?><option value="<?= h($c) ?>"><?php endforeach ?></datalist>
+    <label>Club photo
+      <select name="club" id="club" required>
+        <option value="">— Choisir —</option>
+        <?php foreach ($clubs as $c): ?><option <?= post('club') === $c ? 'selected' : '' ?>><?= h($c) ?></option><?php endforeach ?>
+        <option value="Indépendant" <?= post('club') === 'Indépendant' ? 'selected' : '' ?>>Pas de club</option>
+        <option value="__autre" <?= post('club') === '__autre' ? 'selected' : '' ?>>Autre club…</option>
+      </select>
       <span class="petit">Deux photos du même club ne se suivent pas dans un cadavre.</span></label>
+    <label id="club_autre_l" hidden>Nom du club (et ville)<input name="club_autre" value="<?= h(post('club_autre')) ?>" placeholder="ex. Photo Club de Neyron (Neyron)"></label>
+    <script>
+      (() => { const s = document.getElementById('club'), a = document.getElementById('club_autre_l');
+        const maj = () => { a.hidden = s.value !== '__autre'; a.querySelector('input').required = !a.hidden; };
+        s.addEventListener('change', maj); maj(); })();
+    </script>
     <input name="site_web" class="pot" tabindex="-1" autocomplete="off">
     <label class="case"><input type="checkbox" name="accord" value="1" required>
       J'accepte que mes photos soient transmises au participant suivant, montrées aux participants de mon cadavre

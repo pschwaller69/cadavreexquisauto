@@ -234,17 +234,65 @@ function est_independant(string $club): bool
     return in_array(mb_strtolower(trim($club)), ['', 'indépendant', 'independant', 'individuel', 'aucun'], true);
 }
 
-/** Club tel qu'enregistré : même écriture qu'un club déjà connu (sans tenir compte des majuscules). */
+/** Clubs proposés dans la liste d'inscription (ceux du cadavre exquis inter-clubs). À compléter si besoin. */
+function clubs_defaut(): array
+{
+    return [
+        'ASCMO (Lissieu)',
+        'ASCS (Rillieux la Pape)',
+        'CLAVI (Villeurbanne)',
+        'Club Photo de Dardilly (Dardilly)',
+        'Club Photo de Feurs (42)',
+        'Club Photo St André de Corcy (St André de Corcy)',
+        'Image Contact (Miribel)',
+        'Objectifs en Dombes (Ambérieux-en-Dombes)',
+        'Photo Passion (les Echets)',
+        'SCF',
+    ];
+}
+
+/** Liste du formulaire : clubs par défaut + clubs saisis par les inscrits (« Autre club »), sans doublon. */
+function clubs_connus(): array
+{
+    $l = [];
+    foreach (clubs_defaut() as $c) $l[mb_strtolower($c)] = $c;
+    foreach (q("SELECT DISTINCT club FROM participants WHERE club IS NOT NULL AND club <> '' AND club <> 'Indépendant'")->fetchAll(PDO::FETCH_COLUMN) as $c) {
+        $l[mb_strtolower($c)] ??= $c;
+    }
+    uasort($l, fn($a, $b) => strcasecmp(iconv('UTF-8', 'ASCII//TRANSLIT', $a), iconv('UTF-8', 'ASCII//TRANSLIT', $b)));
+    return array_values($l);
+}
+
+/** Pour comparer deux écritures d'un club : minuscules, sans accents ni ponctuation. */
+function cle_club(string $s): string
+{
+    $s = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', mb_strtolower(trim($s))) ?: $s;
+    return trim(preg_replace('/[^a-z0-9]+/', ' ', $s));
+}
+
+/**
+ * Club tel qu'enregistré : rattaché à un club connu si on reconnaît son nom ou sa ville
+ * (« clavi » → « CLAVI (Villeurbanne) », « Miribel » → « Image Contact (Miribel) »).
+ */
 function club_inscription(string $club): string
 {
     $club = club_propre($club);
     if (est_independant($club)) return 'Indépendant';
-    foreach (clubs_connus() as $c) if (mb_strtolower($c) === mb_strtolower($club)) return $c;
-    return $club;
-}
-function clubs_connus(): array
-{
-    return q("SELECT DISTINCT club FROM participants WHERE club IS NOT NULL AND club <> '' AND club <> 'Indépendant' ORDER BY club")->fetchAll(PDO::FETCH_COLUMN);
+    $k = cle_club($club);
+    // Les clubs de la liste officielle d'abord, puis ceux déjà saisis par des inscrits
+    foreach ([clubs_defaut(), clubs_connus()] as $liste) {
+        $par_ville = [];
+        foreach ($liste as $c) {
+            if (cle_club($c) === $k) return $c;
+            if (preg_match('/^(.*?)\s*\(([^)]*)\)\s*$/', $c, $mm)) {
+                if (cle_club($mm[1]) === $k) return $c;
+                $par_ville[cle_club($mm[2])][] = $c;
+            }
+        }
+        if (count($par_ville[$k] ?? []) === 1) return $par_ville[$k][0]; // ville sans ambiguïté
+    }
+    // Club inconnu tapé tout en minuscules : « photo club de neyron » → « Photo Club De Neyron »
+    return mb_strtolower($club) === $club ? mb_convert_case($club, MB_CASE_TITLE) : $club;
 }
 
 /** Clubs des 2 dernières photos rendues d'un cadavre (du plus récent au plus ancien). « Indépendant » est ignoré. */

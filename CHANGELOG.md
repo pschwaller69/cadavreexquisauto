@@ -2,6 +2,12 @@
 
 La version en ligne s'affiche en haut à droite de l'admin et sur https://cadavreexquisauto.schwaller.art/version.php
 
+## 1.3.1 – 18/11/2026
+- Inscription : le club se choisit dans une liste déroulante (clubs du cadavre inter-clubs + clubs déjà saisis,
+  « Pas de club », « Autre club… ») au lieu d'un champ à suggestions qui s'affichait mal sur téléphone
+- Un club tapé à la main est rattaché au club connu correspondant (« Clavi » → « CLAVI (Villeurbanne) »,
+  « Miribel » → « Image Contact (Miribel) ») ; les clubs déjà enregistrés sont corrigés automatiquement
+
 ## 1.3.0 – 18/11/2026
 - Page d'inscription : encadré « Fais tourner ! » invitant à partager la page à tous les photographes qu'on connaît
   (bouton Partager du téléphone, WhatsApp, Facebook, mail, copier le lien), affiché aussi juste après l'inscription

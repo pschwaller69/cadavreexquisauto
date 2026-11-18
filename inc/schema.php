@@ -154,6 +154,13 @@ function assurer_schema(): void
     foreach (schema_sql(cfg('db.driver')) as $sql) db()->exec($sql);
     // Colonnes ajoutées après la première version
     ajouter_colonne('participants', 'rappel_le', 'DATETIME NULL');
+    // 1.3.1 : clubs saisis à la main rattachés aux clubs connus (« Clavi » → « CLAVI (Villeurbanne) »)
+    if (function_exists('club_inscription')) {
+        foreach (q("SELECT DISTINCT club FROM participants WHERE club IS NOT NULL AND club <> ''")->fetchAll(PDO::FETCH_COLUMN) as $c) {
+            $n = club_inscription($c);
+            if ($n !== $c) q('UPDATE participants SET club = ? WHERE club = ?', [$n, $c]);
+        }
+    }
     // 1.2.0 : le mail « c'est ton tour » présente l'option « recontacte-moi dans… » (seulement si la phrase d'origine n'a pas été modifiée)
     q("UPDATE modeles_mail SET corps = REPLACE(corps, ?, ?) WHERE code = 'a_toi'", [
         "Si tu ne peux finalement pas participer, clique sur « Je ne peux pas participer » en bas de la page : le cadavre continuera sans attendre.",
