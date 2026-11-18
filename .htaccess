@@ -6,3 +6,11 @@ Options -Indexes
 RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Limites PHP (LiteSpeed chez o2switch ignore .user.ini) : photos jusqu'à 30 Mo
+<IfModule LiteSpeed>
+php_value upload_max_filesize 32M
+php_value post_max_size 120M
+php_value max_execution_time 180
+php_value max_input_time 180
+</IfModule>

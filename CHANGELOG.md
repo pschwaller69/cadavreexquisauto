@@ -2,6 +2,9 @@
 
 La version en ligne s'affiche en haut à droite de l'admin et sur https://cadavreexquisauto.schwaller.art/version.php
 
+## 1.0.1 – 18/11/2026
+- Limites d'envoi de photos (32 Mo) déclarées dans .htaccess : LiteSpeed chez o2switch ignorait .user.ini (limite réelle 2 Mo)
+
 ## 1.0.0 – 18/11/2026
 Première version du cadavre exquis automatique (construit à partir du cadavre exquis classique v1.13.0).
 - Jeu continu, sans édition : inscription à tout moment, cadavres de 15 photos
