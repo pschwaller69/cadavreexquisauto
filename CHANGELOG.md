@@ -2,6 +2,10 @@
 
 La version en ligne s'affiche en haut à droite de l'admin et sur https://cadavreexquisauto.schwaller.art/version.php
 
+## 1.3.0 – 18/11/2026
+- Page d'inscription : encadré « Fais tourner ! » invitant à partager la page à tous les photographes qu'on connaît
+  (bouton Partager du téléphone, WhatsApp, Facebook, mail, copier le lien), affiché aussi juste après l'inscription
+
 ## 1.2.0 – 18/11/2026
 - Page de dépôt : « Pas le temps en ce moment ? » — le participant laisse sa place au suivant et choisit quand être recontacté
   (1, 2, 3, 6 mois ou 1 an) ; à la date prévue, il reçoit un mail avec un lien pour rejouer en un clic (nouveau modèle « Rappel après une pause »)

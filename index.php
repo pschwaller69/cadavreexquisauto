@@ -21,6 +21,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $st = stats_publiques();
 $clubs = clubs_connus();
+?>
+<?php
+// Encadré de partage (inscription et confirmation)
+function bloc_partage(): string
+{
+    $lien = url();
+    $texte = 'Rejoins le cadavre exquis photographique automatique : chacun reçoit une photo et réalise la suivante en s\'en inspirant !';
+    ob_start(); ?>
+  <div class="partage">
+    <p><strong>📣 Fais tourner !</strong> Plus il y a de photographes, plus les cadavres avancent vite.
+      Partage cette page d'inscription à tous les photographes que tu connais : amis, club, collègues…</p>
+    <div class="partage-boutons">
+      <button type="button" class="btn" id="btn-partage" hidden>Partager…</button>
+      <a class="btn sec" target="_blank" rel="noopener" href="https://wa.me/?text=<?= rawurlencode($texte . ' ' . $lien) ?>">WhatsApp</a>
+      <a class="btn sec" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=<?= rawurlencode($lien) ?>">Facebook</a>
+      <a class="btn sec" href="mailto:?subject=<?= rawurlencode('Un cadavre exquis photographique, ça te tente ?') ?>&amp;body=<?= rawurlencode($texte . "\n\nPour s'inscrire : " . $lien) ?>">Mail</a>
+      <button type="button" class="btn sec" id="btn-copie">Copier le lien</button>
+    </div>
+    <p class="petit lien-partage"><?= h(preg_replace('#^https?://#', '', $lien)) ?></p>
+  </div>
+  <script>
+    (() => {
+      const lien = <?= json_encode($lien) ?>, texte = <?= json_encode($texte, JSON_UNESCAPED_UNICODE) ?>;
+      const bp = document.getElementById('btn-partage'), bc = document.getElementById('btn-copie');
+      if (navigator.share) { bp.hidden = false; bp.onclick = () => navigator.share({title: 'Cadavre Exquis Automatique', text: texte, url: lien}).catch(() => {}); }
+      bc.onclick = () => navigator.clipboard.writeText(lien).then(() => { bc.textContent = '✓ Lien copié'; setTimeout(() => bc.textContent = 'Copier le lien', 2500); });
+    })();
+  </script>
+<?php return ob_get_clean();
+}
 ?><!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cadavre Exquis Photographique Automatique</title><link rel="stylesheet" href="assets/style.css?v=<?= APP_VERSION ?>">
 <link rel="icon" type="image/png" href="assets/icons/favicon.png">
@@ -44,6 +74,7 @@ $clubs = clubs_connus();
       <?php else: ?>Tous les cadavres sont occupés pour l'instant : tu recevras un mail dès que ce sera ton tour.<?php endif ?></p>
     <p class="petit">Pense à vérifier tes courriers indésirables et à ajouter <?= h(cfg('mail.from')) ?> à tes contacts.</p>
   <?php endif ?>
+  <?= bloc_partage() ?>
 
 <?php else: ?>
   <div class="regles">
@@ -73,5 +104,6 @@ $clubs = clubs_connus();
     <button class="btn">Je m'inscris</button>
   </form>
   <p class="petit">Déjà inscrit(e) ? Saisis la même adresse : tu recevras le lien de ton espace personnel.</p>
+  <?= bloc_partage() ?>
 <?php endif ?>
 </main></body></html>

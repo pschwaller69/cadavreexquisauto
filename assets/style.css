@@ -133,3 +133,8 @@ fieldset.choix-type legend { color: var(--doux); font-size: 14px; padding: 0 4px
 .pause .actions { align-items: center; margin: 0 0 6px; }
 .pause label.inline { display: inline-flex; align-items: center; gap: 8px; margin: 0; }
 .pause select { width: auto; }
+.partage { margin-top: 22px; padding: 14px 16px; border-radius: 8px; background: var(--fond3); border-left: 3px solid var(--violet, #8b45ff); }
+.partage p { margin: 0 0 10px; }
+.partage-boutons { display: flex; flex-wrap: wrap; gap: 8px; }
+.partage-boutons .btn { width: auto; padding: 8px 14px; font-size: 14px; }
+.partage .lien-partage { margin: 10px 0 0; }
