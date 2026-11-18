@@ -61,7 +61,9 @@ Gmail limite à environ 500 mails par jour : largement suffisant pour plusieurs 
    (le nom du compte est visible en haut à droite de cPanel ou dans le chemin du Gestionnaire de fichiers).
 3. Ouvrir `https://cadavreexquisauto.schwaller.art/install.php` : contrôles, création des tables et du compte admin.
 4. **Supprimer `install.php`.**
-5. Vérifier que `https://cadavreexquisauto.schwaller.art/config.php` et `/data/photos/` répondent « 403 Forbidden ».
+5. cPanel > **Sélectionner une version de PHP** > Options : `upload_max_filesize` = 32M, `post_max_size` = 128M
+   (o2switch ignore `.user.ini` : sans ça, les photos de plus de 2 Mo sont refusées).
+6. Vérifier que `https://cadavreexquisauto.schwaller.art/config.php` et `/data/photos/` répondent « 403 Forbidden ».
 
 ### 4. Tâche cron (indispensable)
 cPanel > **Tâches Cron**, toutes les 5 minutes :

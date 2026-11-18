@@ -2,8 +2,11 @@
 
 La version en ligne s'affiche en haut à droite de l'admin et sur https://cadavreexquisauto.schwaller.art/version.php
 
+## 1.0.2 – 18/11/2026
+- Limites d'envoi réglées dans cPanel (PHP Selector > Options : 32 Mo par photo, 128 Mo par envoi) ; .user.ini et php_value sont ignorés chez o2switch
+
 ## 1.0.1 – 18/11/2026
-- Limites d'envoi de photos (32 Mo) déclarées dans .htaccess : LiteSpeed chez o2switch ignorait .user.ini (limite réelle 2 Mo)
+- (essai de limites dans .htaccess, sans effet chez o2switch)
 
 ## 1.0.0 – 18/11/2026
 Première version du cadavre exquis automatique (construit à partir du cadavre exquis classique v1.13.0).
