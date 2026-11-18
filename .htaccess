@@ -1,0 +1,8 @@
+Options -Indexes
+<FilesMatch "^(config\.php|config\.sample\.php|README\.md)$">
+  Require all denied
+</FilesMatch>
+# Forcer HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

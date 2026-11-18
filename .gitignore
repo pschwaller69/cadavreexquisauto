@@ -1,0 +1,11 @@
+# Configuration locale (mots de passe MySQL / Gmail) : ne jamais publier
+config.php
+# Données : base SQLite de test et photos des participants
+data/*.sqlite
+data/photos/*
+!data/photos/.gitkeep
+data/sessions/
+inc/deploy.txt
+data/externes.json
+data/*.txt
+data/*.lock

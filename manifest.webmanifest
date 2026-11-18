@@ -1,0 +1,71 @@
+{
+  "name": "Cadavre Exquis Automatique – Admin",
+  "short_name": "Cadavre Auto",
+  "description": "Administration du cadavre exquis photographique automatique",
+  "lang": "fr",
+  "id": "./admin/",
+  "start_url": "./admin/",
+  "scope": "./admin/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0d0d12",
+  "theme_color": "#17171f",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Tableau de bord",
+      "url": "./admin/",
+      "icons": [
+        {
+          "src": "assets/icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Cadavres",
+      "url": "./admin/cadavres.php",
+      "icons": [
+        {
+          "src": "assets/icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Participants",
+      "url": "./admin/participants.php",
+      "icons": [
+        {
+          "src": "assets/icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

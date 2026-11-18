@@ -1,0 +1,11 @@
+---
+# Déploiement cPanel (o2switch) : Git Version Control > Gérer > "Pull or Deploy" > "Deploy HEAD Commit"
+# Copie le dépôt vers la racine du sous-domaine, sans écraser config.php ni les photos.
+# Adapter DEPLOYPATH si la racine du document du sous-domaine est différente (cPanel > Domaines).
+deployment:
+  tasks:
+    - export DEPLOYPATH=$HOME/cadavreexquisauto.schwaller.art/
+    - /bin/mkdir -p $DEPLOYPATH
+    - /bin/rsync -a --exclude='.git' --exclude='.cpanel.yml' --exclude='.gitignore' --exclude='config.php' --exclude='data/photos/' ./ $DEPLOYPATH
+    - /bin/mkdir -p ${DEPLOYPATH}data/photos
+    - /bin/echo "$(/usr/bin/git rev-parse --short HEAD) $(/bin/date '+%Y-%m-%d %H:%M')" > ${DEPLOYPATH}inc/deploy.txt
