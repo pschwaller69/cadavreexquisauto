@@ -3,7 +3,7 @@ function entete(string $titre, string $actif = ''): void
 {
     $a = admin();
     $menu = ['index' => 'Tableau de bord', 'cadavres' => 'Cadavres', 'participants' => 'Participants', 'depart' => 'Photos de départ',
-             'mails' => 'Mails', 'admins' => 'Administrateurs'];
+             'qrcode' => 'QR code', 'mails' => 'Mails', 'admins' => 'Administrateurs'];
     ?><!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?= h($titre) ?> – Cadavre Auto</title><link rel="stylesheet" href="../assets/style.css?v=<?= APP_VERSION ?>"><?= pwa_head() ?>
 <body class="admin">

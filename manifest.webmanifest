@@ -66,6 +66,16 @@
           "sizes": "192x192"
         }
       ]
+    },
+    {
+      "name": "QR code (événement)",
+      "url": "./admin/qrcode.php#evenement",
+      "icons": [
+        {
+          "src": "assets/icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

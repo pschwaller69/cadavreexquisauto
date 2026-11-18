@@ -2,6 +2,10 @@
 
 La version en ligne s'affiche en haut à droite de l'admin et sur https://cadavreexquisauto.schwaller.art/version.php
 
+## 1.1.0 – 18/11/2026
+- Admin > **QR code** : QR code de la page d'inscription, mode événement plein écran (tablette, vidéoprojecteur),
+  affiche A4 à imprimer, téléchargement PNG 2000 px et SVG ; raccourci « QR code (événement) » dans l'appli admin installée
+
 ## 1.0.2 – 18/11/2026
 - Limites d'envoi réglées dans cPanel (PHP Selector > Options : 32 Mo par photo, 128 Mo par envoi) ; .user.ini et php_value sont ignorés chez o2switch
 

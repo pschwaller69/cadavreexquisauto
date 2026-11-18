@@ -41,6 +41,7 @@ entete('Tableau de bord', 'index');
   <form method="post"><?= csrf_field() ?><button class="btn sec" name="action" value="placer">↻ Placer les inscrits en attente</button></form>
   <form method="post" onsubmit="return confirm('Ouvrir un cadavre de plus, avec une photo de départ tirée au sort ?')"><?= csrf_field() ?><button class="btn sec" name="action" value="nouveau">＋ Ouvrir un cadavre</button></form>
   <a class="btn sec" href="<?= h(url()) ?>" target="_blank">Page d'inscription ↗</a>
+  <a class="btn sec" href="qrcode.php">▦ QR code</a>
 </div>
 
 <div class="stats">

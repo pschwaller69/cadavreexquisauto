@@ -95,6 +95,7 @@ Elle envoie les relances, passe les retardataires, place les inscrits en attente
 - **Cadavres** : tous les cadavres ; page d'un cadavre : relancer, +7 j, renvoyer le lien, passer, déposer une photo reçue par mail,
   remplacer / retirer une photo, tirer une autre photo de départ (avant le 1er participant), terminer, rouvrir, supprimer, diaporama.
 - **Participants** : recherche, fiche, mise en file / retrait, lien de son espace, inscription manuelle.
+- **QR code** : pour les événements photo (plein écran, affiche A4, PNG/SVG).
 - **Photos de départ**, **Mails** (modèles, file d'envoi, journal), **Administrateurs**.
 
 ## Structure
